@@ -1,1 +1,22 @@
-{}
+{
+  "AU": [
+    {
+      "url": "https://abc.net.au",
+      "category": "media"
+    },
+    {
+      "url": "https://www.australia.gov.au",
+      "category": "government"
+    }
+  ],
+  "US": [
+    {
+      "url": "https://www.whitehouse.gov",
+      "category": "government"
+    },
+    {
+      "url": "https://www.nasa.gov",
+      "category": "science"
+    }
+  ]
+}
