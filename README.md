@@ -1,43 +1,18 @@
-# Net Atlas Ultimate
+# Net Atlas Ultimate – Orbital Edition
 
-A neon-themed interactive 3D world explorer that displays websites by country.
+A neon, orbital-themed interactive 3D world explorer that displays websites by country.
 
 - Spinning 3D globe (Three.js + three-globe)
 - Real country polygons (world-atlas TopoJSON)
+- Orbital visual style: starfield, layered neon orbits, atmosphere halo
 - Click a country to:
   - Fetch live metadata from RESTCountries (name, capital, population, region)
   - Show its flag and stats
   - Show websites defined in `websites-by-country.json`
-- Neon, glassmorphism, scanline / CRT-style UI
+- Neon, glassmorphism, CRT scanlines, hover bloom
 - Website favicons, country flags, TLD-based categories
 
-## How it works
-
-### Frontend
-
-The site is a pure static frontend suitable for GitHub Pages:
-
-- `index.html` – layout, globe container, info panel
-- `style.css` – neon theme, glassmorphism, animations, scanlines
-- `script.js` – globe logic, RESTCountries integration, website list rendering
-- `websites-by-country.json` – data file you maintain (or generate)
-
-The globe is rendered with:
-
-- [three.js](https://threejs.org/)
-- [three-globe](https://github.com/vasturiano/three-globe)
-- [world-atlas](https://github.com/topojson/world-atlas) (`countries-110m.json` via CDN)
-- [RESTCountries](https://restcountries.com/) for country info
-
-Favicons are pulled via Google's favicon service:
-`https://www.google.com/s2/favicons?sz=64&domain=example.com`
-
-Flags per country use:
-`https://flagcdn.com/`  
-
-(For example: `https://flagcdn.com/64x48/au.png` for Australia.)
-
-### Data: websites-by-country.json
+## Data: websites-by-country.json
 
 You (or your backend scripts) are responsible for populating:
 
@@ -54,55 +29,29 @@ You (or your backend scripts) are responsible for populating:
 }
 ```
 
-The keys must be **ISO 3166-1 alpha-2 country codes** (e.g. AU, US, JP, DE).
-Each entry has:
-
-- `url` – full URL string
-- `category` – free text, but will be displayed as a neon tag
-
-If `category` is omitted, a default category is inferred from the top-level domain (TLD).
+The keys are ISO 3166-1 alpha-2 country codes (AU, US, JP, DE, etc.).
 
 ## About Wikipedia, BuiltWith, all.site, internet-map.net
 
-This project is **designed** so that your website lists can come from:
+This project is meant to *visualise* website lists that you can assemble using:
 
-- [Wikipedia – Lists of websites](https://en.wikipedia.org/wiki/Lists_of_websites)
-- [BuiltWith website lists](https://builtwith.com/website-lists/Site)
-- [all.site](https://all.site/search)
-- [internet-map.net](https://internet-map.net/)
+- Wikipedia – Lists of websites
+- BuiltWith website lists
+- all.site search
+- internet-map.net
 
-However:
+But:
 
 - The **browser frontend does NOT scrape those sites directly.**
-- Many sites (especially BuiltWith, all.site, internet-map.net) have Terms of Service
-  that restrict automated scraping or require a proper API / license.
-- Wikipedia is generally more open, but still has usage guidelines.
+- Many of them have Terms of Service that restrict scraping.
+- Instead, use your own backend/CLI scripts (respecting ToS or using official APIs)
+  to collect URLs and generate `websites-by-country.json`.
 
-### Recommended approach
-
-1. **Manual / semi-automatic collection**
-
-   Use those websites to find URLs you care about, then put them into
-   `websites-by-country.json` manually.
-
-2. **Your own backend scripts (advanced)**
-
-   If you want automation:
-
-   - Write server-side scripts (e.g. Node.js, Python) that:
-     - Respect each site's Terms of Service.
-     - Use official APIs or data exports if available.
-   - Have those scripts generate `websites-by-country.json`.
-   - Commit that JSON into your GitHub repo, or host it on your own backend
-     and change the frontend to `fetch()` from your API.
-
-> This repo intentionally does **not** include scrapers for those sites,
-> to avoid violating their terms or doing automated scraping from the browser.
+Then this frontend will render them on the orbital globe.
 
 ## Deploying to GitHub Pages
 
-1. Create a new repository on GitHub (e.g. `net-atlas-ultimate`).
-2. Add these files to the root:
+1. Create a new repo and add:
    - `index.html`
    - `style.css`
    - `script.js`
@@ -110,14 +59,12 @@ However:
    - `LICENSE`
    - `.gitignore`
    - `README.md`
-3. Commit and push.
-4. In the GitHub repo:
-   - Go to **Settings → Pages**
-   - Set **Source** to `main` branch, root (`/`)
-5. Your Net Atlas Ultimate site will be available at:
-   `https://<your-username>.github.io/<repo-name>/`
+2. Push to GitHub.
+3. Enable GitHub Pages (Settings → Pages → source = `main` / root).
+4. Your site appears at:  
+   `https://<username>.github.io/<repo>/`
 
 ## Title & description
 
-- **Title:** Net Atlas Ultimate  
-- **Description:** A neon-themed interactive 3D world explorer that displays websites by country using a spinning globe, live country data, flags, icons, and categories.
+- **Title:** Net Atlas Ultimate – Orbital Edition  
+- **Description:** A neon orbital 3D globe that shows websites by country as constellations of URLs, combining live country data, flags, icons, and categories.

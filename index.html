@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Net Atlas Ultimate</title>
+  <title>Net Atlas Ultimate – Orbital Edition</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="style.css" />
   <!-- 3D / globe dependencies -->
@@ -12,27 +12,41 @@
   <script defer src="script.js"></script>
 </head>
 <body>
+  <div class="space-bg">
+    <div class="stars-layer stars-layer-1"></div>
+    <div class="stars-layer stars-layer-2"></div>
+    <div class="stars-layer stars-layer-3"></div>
+  </div>
   <div class="scanlines"></div>
 
   <header class="header glass card-border-anim">
     <div class="logo neon-pulse">
-      <span class="logo-mark">◎</span>
+      <div class="logo-orbit-wrapper">
+        <span class="logo-orb"></span>
+        <span class="logo-ring ring-a"></span>
+        <span class="logo-ring ring-b"></span>
+      </div>
       <span class="logo-text">NET ATLAS</span>
     </div>
     <div class="header-right">
-      <span class="header-pill">live globe</span>
-      <span class="header-pill soft">website explorer</span>
+      <span class="header-pill">orbital globe</span>
+      <span class="header-pill soft">website constellations</span>
     </div>
     <div class="underline-anim"></div>
   </header>
 
   <main class="layout">
-    <section class="globe-shell glass">
+    <section class="globe-shell glass card-border-anim">
+      <div class="globe-orbits-overlay">
+        <div class="orbit-ring orbit-thin"></div>
+        <div class="orbit-ring orbit-multi"></div>
+        <div class="orbit-ring orbit-holo"></div>
+      </div>
       <div id="globeContainer" class="globe-container"></div>
       <div class="globe-overlay">
-        <div id="statusPill" class="status-pill">loading world data…</div>
+        <div id="statusPill" class="status-pill">initialising orbital systems…</div>
         <div class="hint">
-          drag to orbit · scroll to zoom · click a country to inspect
+          drag to orbit · scroll to zoom · click a country to scan its sites
         </div>
       </div>
     </section>
@@ -43,7 +57,7 @@
         <div class="country-title-block">
           <h2 id="countryName">No country selected</h2>
           <p id="countryMeta" class="country-meta">
-            Click any country on the globe to load its info and websites.
+            Click any country on the orbital globe to load its intel and website links.
           </p>
         </div>
       </div>

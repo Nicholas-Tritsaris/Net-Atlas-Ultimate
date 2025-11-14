@@ -1,13 +1,22 @@
 /**
- * Net Atlas Ultimate - main client script
- * - Renders a 3D globe with real country polygons
- * - On country click, fetches metadata from RESTCountries
- * - Looks up websites in websites-by-country.json
- * - Renders neon website list with favicons, flags, categories
+ * Net Atlas Ultimate – Orbital Edition
  *
- * NOTE: This client does NOT scrape Wikipedia, BuiltWith, all.site, or internet-map.net
- *       directly. Instead, your own scripts can aggregate URLs from those sources
- *       and write them into websites-by-country.json in the expected format.
+ * Same functionality as the PRO build, but visually tuned with orbital styling.
+ * - 3D globe (three-globe)
+ * - Real country polygons from world-atlas
+ * - RESTCountries for live metadata
+ * - Websites-per-country loaded from websites-by-country.json
+ * - Favicons, flags, TLD-based categories, neon UI
+ *
+ * IMPORTANT ABOUT DATA SOURCES:
+ * This frontend does NOT scrape:
+ *   - https://en.wikipedia.org/wiki/Lists_of_websites
+ *   - https://builtwith.com/website-lists/Site
+ *   - https://all.site/search
+ *   - https://internet-map.net/
+ *
+ * Instead, you or your backend scripts should collect URLs (respecting their
+ * Terms of Service / APIs) and write them into websites-by-country.json.
  */
 
 let websitesByCountry = {};
@@ -29,14 +38,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
 async function initApp() {
   try {
-    setStatus("loading websites…");
+    setStatus("loading websites database…");
     websitesByCountry = await loadWebsitesJSON();
-    setStatus("loading world topology…");
+    setStatus("booting orbital globe…");
     await initGlobe();
-    setStatus("ready – click a country");
+    setStatus("online – click a country");
   } catch (err) {
     console.error(err);
-    setStatus("error loading data");
+    setStatus("error initialising system");
   }
 }
 
@@ -48,11 +57,6 @@ function setStatus(msg) {
 
 /**
  * Load websites-by-country.json which you maintain / generate.
- * Structure:
- * {
- *   "AU": [ { "url": "https://example.com", "category": "media" }, ... ],
- *   "US": [ { "url": "...", "category": "gov" } ]
- * }
  */
 async function loadWebsitesJSON() {
   try {
@@ -91,21 +95,21 @@ async function initGlobe() {
     0.1,
     2000
   );
-  camera.position.z = 420;
+  camera.position.z = 430;
 
   const ambientLight = new THREE.AmbientLight(0x557799, 1.0);
   scene.add(ambientLight);
-  const directionalLight = new THREE.DirectionalLight(0xffffff, 0.9);
+  const directionalLight = new THREE.DirectionalLight(0xffffff, 0.95);
   directionalLight.position.set(200, 200, 200);
   scene.add(directionalLight);
 
-  // globe
+  // globe instance
   const globe = new ThreeGlobe()
     .globeImageUrl("https://unpkg.com/three-globe/example/img/earth-night.jpg")
     .bumpImageUrl("https://unpkg.com/three-globe/example/img/earth-topology.png")
     .polygonsData(countries)
     .polygonCapColor(() => "rgba(56, 189, 248, 0.20)")
-    .polygonSideColor(() => "rgba(15, 23, 42, 0.95)")
+    .polygonSideColor(() => "rgba(15, 23, 42, 0.96)")
     .polygonStrokeColor(() => "#38bdf8")
     .polygonAltitude(() => 0.01)
     .onPolygonClick(handleCountryClick);
@@ -113,7 +117,7 @@ async function initGlobe() {
   globeInstance = globe;
   scene.add(globe);
 
-  // atmosphere glow
+  // atmosphere halo
   const radius = globe.getGlobeRadius ? globe.getGlobeRadius() : 100;
   const atmosphere = new THREE.Mesh(
     new THREE.SphereGeometry(radius * 1.08, 64, 64),
@@ -127,6 +131,10 @@ async function initGlobe() {
   );
   atmosphere.position.copy(globe.position);
   scene.add(atmosphere);
+
+  // subtle orbital tilt
+  globe.rotation.x = 0.15;
+  atmosphere.rotation.x = 0.15;
 
   // slow rotation
   function animate() {
@@ -154,11 +162,11 @@ async function handleCountryClick(feature) {
     ? feature.properties.name
     : "Unknown";
 
-  setStatus(`loading ${name}…`);
+  setStatus(`resolving ${name}…`);
   try {
     const info = await fetchCountryInfo(name);
     renderCountry(info);
-    setStatus("ready – click another country");
+    setStatus("online – click another country");
   } catch (e) {
     console.error(e);
     setStatus(`could not load data for ${name}`);
@@ -274,7 +282,7 @@ function renderWebsiteList(countryCode, websites) {
     const category = (typeof entry === "object" && entry.category) || inferCategoryFromTLD(tld);
 
     const li = document.createElement("li");
-    li.className = "website-item neon-border-soft";
+    li.className = "website-item";
 
     const faviconUrl =
       "https://www.google.com/s2/favicons?sz=64&domain=" + encodeURIComponent(hostname);
@@ -332,8 +340,7 @@ function renderWebsiteList(countryCode, websites) {
 
     link.addEventListener("click", () => {
       li.classList.remove("click-bloom");
-      // restart animation
-      void li.offsetWidth;
+      void li.offsetWidth; // restart animation
       li.classList.add("click-bloom");
     });
 
