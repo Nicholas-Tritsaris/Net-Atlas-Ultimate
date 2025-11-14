@@ -1,25 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Net Atlas Ultimate</title>
-<link rel="stylesheet" href="style.css">
-<script src="https://unpkg.com/three"></script>
-<script src="https://unpkg.com/three-globe"></script>
-<script src="script.js" defer></script>
+  <meta charset="UTF-8" />
+  <title>Net Atlas Ultimate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+  <!-- 3D / globe dependencies -->
+  <script src="https://unpkg.com/three@0.158.0/build/three.min.js"></script>
+  <script src="https://unpkg.com/three-globe@2.30.0/dist/three-globe.min.js"></script>
+  <script src="https://unpkg.com/topojson-client@3/dist/topojson-client.min.js"></script>
+  <script defer src="script.js"></script>
 </head>
 <body>
-<div class="scanlines"></div>
-<header class="header">
-  <div class="logo neon-pulse">NET ATLAS</div>
-  <div class="underline-anim"></div>
-</header>
-<main class="layout">
-  <div id="globeContainer" class="globe"></div>
-  <aside class="panel glass card-border">
-    <h2>Websites</h2>
-    <ul id="websiteList" class="scroll-list"></ul>
-  </aside>
-</main>
+  <div class="scanlines"></div>
+
+  <header class="header glass card-border-anim">
+    <div class="logo neon-pulse">
+      <span class="logo-mark">◎</span>
+      <span class="logo-text">NET ATLAS</span>
+    </div>
+    <div class="header-right">
+      <span class="header-pill">live globe</span>
+      <span class="header-pill soft">website explorer</span>
+    </div>
+    <div class="underline-anim"></div>
+  </header>
+
+  <main class="layout">
+    <section class="globe-shell glass">
+      <div id="globeContainer" class="globe-container"></div>
+      <div class="globe-overlay">
+        <div id="statusPill" class="status-pill">loading world data…</div>
+        <div class="hint">
+          drag to orbit · scroll to zoom · click a country to inspect
+        </div>
+      </div>
+    </section>
+
+    <aside class="panel glass card-border-anim">
+      <div class="country-header">
+        <img id="countryFlag" class="country-flag hidden" alt="Flag" />
+        <div class="country-title-block">
+          <h2 id="countryName">No country selected</h2>
+          <p id="countryMeta" class="country-meta">
+            Click any country on the globe to load its info and websites.
+          </p>
+        </div>
+      </div>
+
+      <div class="country-stats">
+        <span id="countryCodeBadge" class="badge">--</span>
+        <span id="websiteCount" class="badge soft">0 sites</span>
+        <span id="regionBadge" class="badge ghost">—</span>
+      </div>
+
+      <div class="divider"></div>
+
+      <ul id="websiteList" class="website-list scroll-list">
+        <!-- populated by script.js -->
+      </ul>
+    </aside>
+  </main>
 </body>
 </html>
